@@ -41,6 +41,8 @@ class _AuthViewState extends State<AuthView> {
                       _buildAvatarUrlField(),
                     ],
                     const SizedBox(height: 32),
+                    _buildErrorMessage(),
+                    const SizedBox(height: 32),
                     _buildSubmitButton(),
                     const SizedBox(height: 32),
                     _buildToggleModeButton(),
@@ -170,6 +172,22 @@ class _AuthViewState extends State<AuthView> {
     );
   }
 
+  Widget _buildErrorMessage() {
+    return Obx(
+      () => Visibility(
+        visible: viewModel.errorMessage.isNotEmpty,
+        child: Text(
+          viewModel.errorMessage,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.error,
+            fontSize: 16,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   Widget _buildSubmitButton() {
     return SizedBox(
       height: 50,
@@ -183,14 +201,20 @@ class _AuthViewState extends State<AuthView> {
           foregroundColor: Theme.of(context).colorScheme.onPrimary,
         ),
         child: viewModel.isSubmitting
-            ? const SizedBox(
+            ? SizedBox(
                 height: 20,
                 width: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               )
             : Text(
                 viewModel.isLoginMode ? 'ENTRAR' : 'CADASTRAR',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
       ),
     );

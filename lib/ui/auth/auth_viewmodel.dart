@@ -84,6 +84,7 @@ class AuthViewModel extends GetxController {
     } else {
       await register();
     }
+    _isSubmitting.value = false;
   }
 
   Future<void> login() async {
@@ -91,13 +92,16 @@ class AuthViewModel extends GetxController {
       email: emailController.text,
       password: passwordController.text,
     );
-    response.fold((left) {
-      _errorMessage.value = left.message;
-      print(errorMessage);
-    }, (right) {
-      print(right);
-      return;
-    });
+    response.fold(
+      (left) {
+        _errorMessage.value = left.message;
+        print(errorMessage);
+      },
+      (right) {
+        print(right);
+        return;
+      },
+    );
   }
 
   Future<void> register() async {
