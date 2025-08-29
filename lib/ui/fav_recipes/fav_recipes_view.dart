@@ -12,15 +12,35 @@ class FavRecipesView extends StatefulWidget {
   State<FavRecipesView> createState() => _FavRecipesViewState();
 }
 
-class _FavRecipesViewState extends State<FavRecipesView> {
+class _FavRecipesViewState extends State<FavRecipesView>
+    with SingleTickerProviderStateMixin {
   final viewModel = getIt<FavRecipesViewModel>();
+
+  late AnimationController _animationController;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+
+    _animation = Tween(begin: 0.0, end: 200.0).animate(_animationController);
+    _animation.addListener(() => setState(() {}));
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       viewModel.getFavRecipes();
+      _animationController.forward();
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,20 +97,25 @@ class _FavRecipesViewState extends State<FavRecipesView> {
                           ),
                           const SizedBox(height: 16),
                           Expanded(
-                            child: ListView.builder(
-                              itemCount: viewModel.favRecipes.length,
-                              itemBuilder: (context, index) {
-                                final recipe = viewModel.favRecipes[index];
-                                return Stack(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () =>
-                                          context.go('/recipe/${recipe.id}'),
-                                      child: RecipeCard(recipe: recipe),
-                                    ),
-                                  ],
-                                );
-                              },
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                top: 200 - _animation.value,
+                              ),
+                              child: ListView.builder(
+                                itemCount: viewModel.favRecipes.length,
+                                itemBuilder: (context, index) {
+                                  final recipe = viewModel.favRecipes[index];
+                                  return Stack(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () =>
+                                            context.go('/recipe/${recipe.id}'),
+                                        child: RecipeCard(recipe: recipe),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
