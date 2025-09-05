@@ -17,7 +17,7 @@ void main() {
       final submitButton = find.byKey(ValueKey('submitButton'));
 
       await tester.enterText(emailField, 'rrcoelho94@gmail.com');
-      await tester.enterText(passwordField, 'Bike2025$');
+      await tester.enterText(passwordField, 'Bike2025#');
       await tester.pump();
 
       await tester.ensureVisible(submitButton);
@@ -44,8 +44,8 @@ void main() {
       final submitButton = find.byKey(ValueKey('submitButton'));
 
       await tester.enterText(emailField, 'rrcoelho94@gmail.com');
-      await tester.enterText(passwordField, 'Bike2025$');
-      await tester.enterText(confirmPasswordField, 'Bike2025$');
+      await tester.enterText(passwordField, 'Bike2025#');
+      await tester.enterText(confirmPasswordField, 'Bike2025#');
       await tester.enterText(usernameField, 'renata');
       await tester.enterText(
         avatarUrlField,
